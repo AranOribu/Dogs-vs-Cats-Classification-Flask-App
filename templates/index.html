@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cat vs Dog Classifier</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <section>
+        <header>
+            <h1>Cat vs Dog Classifier</h1>
+        </header>
+
+        <main>
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('predict') }}">
+                <input type="file" name="files[]" multiple accept="image/*" required>
+                <input type="submit" value="Upload Images">
+            </form>
+
+            {% if predictions %}
+            <div class="images">
+                {% for img_str, prediction in predictions %}
+                <div class="image">
+                    <img src="data:image/png;base64,{{ img_str }}" alt="Uploaded Image">
+                    {% if prediction[0] > prediction[1] %}
+                    <p>Cat probability: {{ prediction[0] | round(2) }}%</p>
+                    {% else %}
+                    <p>Dog probability: {{ prediction[1] | round(2) }}%</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </main>
+
+        <footer>
+            <p>Developed by Aran Oribu</p>
+        </footer>
+    </section>
+</body>
+
+</html>
